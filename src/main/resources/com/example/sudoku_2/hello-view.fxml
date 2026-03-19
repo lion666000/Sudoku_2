@@ -9,20 +9,20 @@
             <children>
                 <VBox prefHeight="200.0" prefWidth="100.0">
                     <children>
-                        <Button mnemonicParsing="false" text="Kontrola zadání" />
-                        <Button mnemonicParsing="false" onAction="#rowCheck" text="Kontrola řešení" />
+                        <Button mnemonicParsing="false" onAction="#checkSudokuBase" text="Kontrola zadání" />
+                        <Button mnemonicParsing="false" onAction="#checkSudokuSolution" text="Kontrola řešení" />
                     </children>
                 </VBox>
-                <VBox prefHeight="200.0" prefWidth="100.0">
+                <VBox prefHeight="100.0" prefWidth="144.0">
                     <children>
-                        <Button mnemonicParsing="false" text="Uzamknutí zadání" />
-                        <Button mnemonicParsing="false" text="Restart pokusu" />
+                        <Button mnemonicParsing="false" onAction="#locker" text="Uzamknutí zadání" />
+                        <Button mnemonicParsing="false" onAction="#initialize" text="Restart pokusu" />
                     </children>
                 </VBox>
-                <VBox prefHeight="200.0" prefWidth="100.0">
+                <VBox prefHeight="100.0" prefWidth="151.0">
                     <children>
-                        <Button mnemonicParsing="false" text="Vymazání celého pole" />
-                        <Button mnemonicParsing="false" text="Generování zadání" />
+                        <Button mnemonicParsing="false" onAction="#deleter" prefHeight="22.0" prefWidth="148.0" text="Vymazání celého pole" />
+                        <Button disable="true" mnemonicParsing="false" text="Generování zadání" />
                     </children>
                 </VBox>
             </children>
