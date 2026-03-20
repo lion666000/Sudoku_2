@@ -1,6 +1,7 @@
 package com.example.sudoku_2;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -8,7 +9,20 @@ import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 
-public class HelloController {
+public class SudokuController {
+
+    int[][] sudokuGrid = {
+            {5, 3, 4, 6, 7, 8, 9, 1, 2},
+            {6, 7, 2, 1, 9, 5, 3, 4, 8},
+            {1, 9, 0, 3, 4, 2, 5, 6, 7},
+            {8, 5, 9, 7, 6, 1, 4, 2, 3},
+            {4, 2, 6, 8, 5, 3, 7, 9, 1},
+            {7, 1, 3, 9, 2, 4, 8, 5, 6},
+            {9, 6, 1, 5, 3, 7, 2, 0, 4},
+            {2, 8, 7, 4, 1, 9, 6, 3, 5},
+            {3, 4, 5, 2, 0, 6, 1, 7, 9}
+    };
+
     @FXML
     private GridPane gridPane;
 
@@ -17,7 +31,7 @@ public class HelloController {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Zadání");
         alert.setHeaderText(null); // Removes the header space
-        alert.setContentText("Chyba v zadání");
+        alert.setContentText("Zadání je špatně");
 
         alert.showAndWait();
     }
@@ -28,6 +42,26 @@ public class HelloController {
         alert.setTitle("Řešení");
         alert.setHeaderText(null); // Removes the header space
         alert.setContentText("Chyba v řešení");
+
+        alert.showAndWait();
+    }
+
+    @FXML
+    protected void correctSolution(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Řešení");
+        alert.setHeaderText(null); // Removes the header space
+        alert.setContentText("Řešení je správně");
+
+        alert.showAndWait();
+    }
+
+    @FXML
+    protected void correctBase(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Zadání");
+        alert.setHeaderText(null); // Removes the header space
+        alert.setContentText("Zadání je správně");
 
         alert.showAndWait();
     }
@@ -62,22 +96,36 @@ public class HelloController {
 
     @FXML
     protected void zadani(){
-        int[][] sudokuGrid = {
-                {5, 3, 4, 6, 7, 8, 9, 1, 2},
-                {6, 7, 2, 1, 9, 5, 3, 4, 8},
-                {1, 9, 8, 3, 4, 2, 5, 6, 7},
-                {8, 5, 9, 7, 6, 1, 4, 2, 3},
-                {4, 2, 6, 8, 5, 3, 7, 9, 1},
-                {7, 1, 3, 9, 2, 4, 8, 5, 6},
-                {9, 6, 1, 5, 3, 7, 2, 8, 4},
-                {2, 8, 7, 4, 1, 9, 6, 3, 5},
-                {3, 4, 5, 2, 8, 6, 1, 7, 9}
-        };
+
+        /*
+        {5, 3, 4, 6, 7, 8, 9, 1, 2},
+        {6, 7, 2, 1, 9, 5, 3, 4, 8},
+        {1, 9, 8, 3, 4, 2, 5, 6, 7},
+        {8, 5, 9, 7, 6, 1, 4, 2, 3},
+        {4, 2, 6, 8, 5, 3, 7, 9, 1},
+        {7, 1, 3, 9, 2, 4, 8, 5, 6},
+        {9, 6, 1, 5, 3, 7, 2, 8, 4},
+        {2, 8, 7, 4, 1, 9, 6, 3, 5},
+        {3, 4, 5, 2, 8, 6, 1, 7, 9}
+
+         */
+
+
 
         for (int j = 0; j < 9; j++){
             for(int k = 0; k < 9; k++){
-                String n = String.valueOf(sudokuGrid[j][k]);
-                gridPane.add(new TextField(n), j, k);
+                String n = String.valueOf(sudokuGrid[k][j]);
+
+                if (Integer.parseInt(n) == 0){
+                    n = null;
+                }
+
+                TextField tf = new TextField(n);
+
+                tf.setPrefSize(30,30);
+                tf.setAlignment(Pos.CENTER);
+
+                gridPane.add(tf, j, k);
             }
         }
     }
@@ -147,14 +195,14 @@ public class HelloController {
 
         int num = 0;
 
-        boolean correct = false;
+        boolean correct = true;
 
         for (int i = 0; i < 9; i++){
             for  (Node node : gridPane.getChildren()) {
                 if (node instanceof TextField) {
                     if (gridPane.getColumnIndex(node) == column && gridPane.getRowIndex(node) == row) {
                         TextField tf = (TextField) node;
-                        if (!tf.getText().equals("") && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)) {
+                        if (tf.getText() != null && !tf.getText().isEmpty() && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)) {
                             num = Integer.parseInt(tf.getText());
                         } else {
                             num = 0;
@@ -203,14 +251,14 @@ public class HelloController {
 
         int num = 0;
 
-        boolean correct = false;
+        boolean correct = true;
 
         for (int i = 0; i < 9; i++){
             for  (Node node : gridPane.getChildren()){
                 if (node instanceof TextField) {
                     if (gridPane.getColumnIndex(node) == column && gridPane.getRowIndex(node) == row){
                         TextField tf = (TextField) node;
-                        if (!tf.getText().equals("") && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)){
+                        if (tf.getText() != null && !tf.getText().isEmpty() && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)){
                             num = Integer.parseInt(tf.getText());
                         }
                         else {
@@ -275,7 +323,7 @@ public class HelloController {
 
                             if (node instanceof TextField && nodeRow == r && nodeCol == c) {
                                 TextField tf = (TextField) node;
-                                if (!tf.getText().equals("") && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)){
+                                if (tf.getText() != null && !tf.getText().isEmpty() && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)){
                                     num = Integer.parseInt(tf.getText());
                                 }
                                 else {
@@ -308,7 +356,7 @@ public class HelloController {
     protected void checkSudokuSolution(){
 
         if (rowCheck() && columnCheck() && boxCheck()){
-
+            correctSolution();
         }
         else  {
             wrongSolution();
@@ -319,18 +367,22 @@ public class HelloController {
     protected void checkSudokuBase(){
 
         if (rowCheck() && columnCheck() && boxCheck()){
-
+            correctBase();
         }
         else  {
-            wrongSolution();
+            wrongBase();
         }
     }
 
     @FXML
     protected void locker(){
         for  (Node node : gridPane.getChildren()){
-            if (node instanceof TextField) {
+            if (node instanceof TextField && ((TextField) node).getText() != null && !((TextField) node).getText().equals("") ) {
                 node.setDisable(true);
+                sudokuGrid[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] = Integer.parseInt(((TextField) node).getText());
+            }
+            else if (node instanceof TextField) {
+                sudokuGrid[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] = 0;
             }
         }
     }
@@ -349,9 +401,28 @@ public class HelloController {
 
     @FXML
     protected void initialize(){
-        gridPane.getChildren().removeAll();
+
+
+        gridPane.getChildren().removeIf(node -> node instanceof TextField);
         //generateNumbers();
         zadani();
+
+        gridPane.getStyleClass().add("grid-pane");
+
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof TextField) {
+                node.getStyleClass().add("sudoku-field");
+
+                TextField tf = (TextField) node;
+                if (((TextField) node).getText() != null && !((TextField) node).getText().equals("")) {
+                    tf.getStyleClass().add("pre-filled");
+                }
+                else{
+                    tf.getStyleClass().add("user-input");
+                }
+            }
+        }
+
         rowCheck();
         System.out.println("--------------------------------------------------------------------------------------------");
         columnCheck();

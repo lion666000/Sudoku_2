@@ -1,0 +1,40 @@
+/* The main container */
+.grid-pane {
+    -fx-background-color: black; /* This creates the "lines" between cells */
+    -fx-padding: 2;
+    -fx-hgap: 1;
+    -fx-vgap: 1;
+}
+
+/* Base style for every Sudoku cell */
+.sudoku-field {
+    -fx-pref-width: 50;
+    -fx-pref-height: 50;
+    -fx-font-size: 20px;
+    -fx-alignment: center;
+    -fx-background-radius: 0;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 0.5;
+}
+
+/* Thick borders for the 3x3 subgrids */
+.thick-right {
+    -fx-border-width: 0.5 3 0.5 0.5; /* Top, Right, Bottom, Left */
+}
+
+.thick-bottom {
+    -fx-border-width: 0.5 0.5 3 0.5;
+}
+
+/* Style for pre-filled (locked) numbers */
+.pre-filled {
+    -fx-background-color: #f0f0f0;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Style for user input */
+.user-input {
+    -fx-background-color: white;
+    -fx-text-fill: #0078d7; /* Blue color for user entries */
+}
