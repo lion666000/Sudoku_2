@@ -66,6 +66,20 @@ public class SudokuController {
         alert.showAndWait();
     }
 
+    public boolean isInteger(String str) {
+        if (str == null || str.isEmpty()) {
+            return true;
+        }
+
+        try {
+            Integer.parseInt(str);
+
+            return true; // It's a valid integer!
+        } catch (NumberFormatException e) {
+            return false; // It contained letters, symbols, or was too long
+        }
+    }
+
     protected void generateNumbers(){
         ArrayList<String> numbers =  new ArrayList<>();
 
@@ -202,11 +216,19 @@ public class SudokuController {
                 if (node instanceof TextField) {
                     if (gridPane.getColumnIndex(node) == column && gridPane.getRowIndex(node) == row) {
                         TextField tf = (TextField) node;
-                        if (tf.getText() != null && !tf.getText().isEmpty() && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)) {
-                            num = Integer.parseInt(tf.getText());
-                        } else {
+
+                        if (isInteger(tf.getText())) {
+                            if (tf.getText() != null && !tf.getText().isEmpty() && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)) {
+                                num = Integer.parseInt(tf.getText());
+                            } else {
+                                num = 0;
+                            }
+                        }
+                        else {
                             num = 0;
                         }
+
+
 
                         numbers.add(num);
 
@@ -258,12 +280,19 @@ public class SudokuController {
                 if (node instanceof TextField) {
                     if (gridPane.getColumnIndex(node) == column && gridPane.getRowIndex(node) == row){
                         TextField tf = (TextField) node;
-                        if (tf.getText() != null && !tf.getText().isEmpty() && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)){
-                            num = Integer.parseInt(tf.getText());
+
+                        if (isInteger(tf.getText())) {
+                            if (tf.getText() != null && !tf.getText().isEmpty() && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)){
+                                num = Integer.parseInt(tf.getText());
+                            }
+                            else {
+                                num = 0;
+                            }
                         }
                         else {
                             num = 0;
                         }
+
 
                         numbers.add(num);
 
@@ -323,14 +352,24 @@ public class SudokuController {
 
                             if (node instanceof TextField && nodeRow == r && nodeCol == c) {
                                 TextField tf = (TextField) node;
-                                if (tf.getText() != null && !tf.getText().isEmpty() && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)){
-                                    num = Integer.parseInt(tf.getText());
+
+                                if (isInteger(tf.getText())) {
+                                    if (tf.getText() != null && !tf.getText().isEmpty() && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)){
+                                        num = Integer.parseInt(tf.getText());
+                                    }
+                                    else {
+                                        num = 0;
+                                    }
+
                                 }
                                 else {
                                     num = 0;
                                 }
 
+
                                 numbers.add(num);
+
+
                             }
                         }
                     }
@@ -365,8 +404,65 @@ public class SudokuController {
 
     @FXML
     protected void checkSudokuBase(){
+        int row = 0;
+        int column = 0;
 
-        if (rowCheck() && columnCheck() && boxCheck()){
+        boolean correct = true;
+
+        int num = 0;
+
+        System.out.println("\n");
+
+        for (int[] e : sudokuGrid){
+            for (int n : e){
+                //System.out.print(n + " ");
+
+                for  (Node node : gridPane.getChildren()){
+                    if (!correct){
+                        break;
+                    }
+                    if (node instanceof TextField) {
+                        if (!correct){
+                            break;
+                        }
+                        if (gridPane.getColumnIndex(node) == column && gridPane.getRowIndex(node) == row) {
+                            TextField tf = (TextField) node;
+
+                            if (isInteger(tf.getText())) {
+                                if (tf.getText() != null && !tf.getText().isEmpty() && (Integer.parseInt(tf.getText()) <= 9 && Integer.parseInt(tf.getText()) >= 1)){
+                                    num = Integer.parseInt(tf.getText());
+                                }
+                                else {
+                                    num = 0;
+                                }
+
+                                System.out.print(num + "-");
+                                System.out.print(n + " ");
+
+                                if (num != n){
+                                    correct = false;
+                                    break;
+                                }
+                                else {
+                                    correct = true;
+                                }
+                            }
+                            else {
+                                correct = false;
+                            }
+
+                        }
+                    }
+                }
+
+                column++;
+            }
+            System.out.println("\n");
+            row++;
+            column = 0;
+        }
+
+        if (correct) {
             correctBase();
         }
         else  {
@@ -423,10 +519,13 @@ public class SudokuController {
             }
         }
 
+        /*
         rowCheck();
         System.out.println("--------------------------------------------------------------------------------------------");
         columnCheck();
         System.out.println("--------------------------------------------------------------------------------------------");
         boxCheck();
+
+         */
     }
 }
